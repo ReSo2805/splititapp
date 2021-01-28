@@ -6,7 +6,7 @@ import de.szut.splitit.database.daos.ExpenseShareDao
 
 class ExpenseShareService(context: Context) {
 
-    private val expenseShare: ExpenseShareDao =
+    private val expenseShareDao: ExpenseShareDao =
         SplitItAppDatabase.getInstance(context.applicationContext).expenseShareDao()
 
 }
