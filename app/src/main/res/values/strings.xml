@@ -13,4 +13,7 @@
         <item quantity="many">%d Ausgaben</item>
         <item quantity="other">%d Ausgaben</item>
     </plurals>
+    <string name="option_change_expenses_pool">Ausgabenpool bearbeiten</string>
+    <string name="option_delete_expenses_pool">Ausgabenpool löschen</string>
+    <string name="option_show_expenses_distribution_view">Schuldenanischt anzeigen</string>
 </resources>

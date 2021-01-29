@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/option_change_expenses_pool"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/option_change_expenses_pool" />
+    <item
+        android:id="@+id/option_show_expenses_distribution_view"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="@string/option_show_expenses_distribution_view" />
+    <item
+        android:id="@+id/option_delete_expenses_pool"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/option_delete_expenses_pool" />
+</menu>

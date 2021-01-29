@@ -2,9 +2,13 @@ package de.szut.splitit.view
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.widget.PopupMenuCompat
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
 import de.szut.splitit.database.views.ExpensesPoolDetails
@@ -12,8 +16,7 @@ import de.szut.splitit.database.views.ExpensesPoolDetails
 class ExpensesPoolDetailsRecyclerViewAdapter(
     private val context: Context,
     private val expensesPoolDetails: List<ExpensesPoolDetails>
-) :
-    RecyclerView.Adapter<ExpensesPoolDetailsRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ExpensesPoolDetailsRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.expenses_pool_name_text_view)
@@ -47,10 +50,25 @@ class ExpensesPoolDetailsRecyclerViewAdapter(
             )
         holder.expenseTotalTextView.text =
             context.getString(R.string.expenses_pool_expense_total, details.expenseTotal)
+
+        holder.itemView.setOnLongClickListener {
+            openPopUp(holder)
+            true
+        }
+
     }
 
     override fun getItemCount(): Int {
         return expensesPoolDetails.size
     }
 
+    private fun openPopUp(holder: ViewHolder) {
+        val popup = PopupMenu(context, holder.itemView)
+        popup.inflate(R.menu.expenses_pool_menu)
+        popup.setOnMenuItemClickListener { item: MenuItem? ->
+            Toast.makeText(context, item?.title, Toast.LENGTH_LONG).show()
+            false
+        }
+        popup.show()
+    }
 }
