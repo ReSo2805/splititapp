@@ -27,10 +27,10 @@ class ExpensesPoolActivity : AppCompatActivity() {
         expensesPoolDetailsRecyclerView.layoutManager = layoutManager
 
         val details =
-                ExpensesPoolDetails("Ausgabenpool 1", 1, 5, 1000f)
+            ExpensesPoolDetails("Ausgabenpool 1", 5, 5, 1000f)
 
         expensesPoolDetailsRecyclerViewAdapter =
-                ExpensesPoolDetailsRecyclerViewAdapter(arrayListOf(details))
+            ExpensesPoolDetailsRecyclerViewAdapter(this, arrayListOf(details))
 
         expensesPoolDetailsRecyclerView.adapter = expensesPoolDetailsRecyclerViewAdapter
     }
