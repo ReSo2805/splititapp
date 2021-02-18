@@ -24,18 +24,17 @@ class ChangeExpensesPoolActivity : AppCompatActivity() {
         initializeActivity()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.home -> {
-                NavUtils.navigateUpFromSameTask(this)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.home -> {
+            NavUtils.navigateUpFromSameTask(this)
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
 
+
     private fun initializeActivity() {
-        when(intent.getIntExtra(REQUEST_CODE_KEY, -1)) {
+        when (intent.getIntExtra(REQUEST_CODE_KEY, -1)) {
             REQUEST_CODE_CREATE -> {
                 //TODO handle create
                 Toast.makeText(this, "Create", Toast.LENGTH_LONG).show()

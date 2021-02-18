@@ -7,7 +7,7 @@
     tools:context=".activities.ChangeExpensesPoolActivity">
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/expenses_pool_name_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/expenses_pool_users_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -33,21 +33,21 @@
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_name_input" />
 
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/expenses_pool_new_user_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_users_title">
 
         <EditText
-            android:id="@+id/editTextTextPersonName2"
+            android:id="@+id/expenses_pool_new_user_name_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -58,6 +58,7 @@
 
 
         <ImageButton
+            android:id="@+id/expenses_pool_add_user_button"
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
@@ -68,14 +69,14 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/expenses_pool_details_recycler_view"
+        android:id="@+id/expenses_pool_users_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_new_user_linear_layout">
 
     </androidx.recyclerview.widget.RecyclerView>
 
