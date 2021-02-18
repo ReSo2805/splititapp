@@ -1,13 +1,15 @@
 package de.szut.splitit.activities
 
 import android.os.Bundle
-import android.widget.Toast
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import de.szut.splitit.R
 import de.szut.splitit.database.entities.ExpensesPool
 import de.szut.splitit.database.entities.User
 import de.szut.splitit.database.services.ExpensesPoolService
 import de.szut.splitit.database.services.UserService
+
 
 class ChangeExpensesPoolActivity : AppCompatActivity() {
 
@@ -24,8 +26,18 @@ class ChangeExpensesPoolActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_expenses_pool)
+        actionBar?.setDisplayHomeAsUpEnabled(true);
         initializeActivity()
     }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.home -> {
+            NavUtils.navigateUpFromSameTask(this)
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
 
     private fun resolveRequestCode(): Int {
        return intent.getIntExtra(REQUEST_CODE_KEY, -1)
