@@ -19,9 +19,9 @@ import androidx.room.PrimaryKey
     )
 ])
 data class ExpenseShare(
-    @PrimaryKey(autoGenerate = true) val expenseShareId: Long,
-    val expenseId: Long,
-    val userId: Long,
-    val valueInPercentage: Boolean,
-    val value: Float
+    @PrimaryKey(autoGenerate = true) var expenseShareId: Long,
+    var expenseId: Long,
+    var userId: Long,
+    var valueInPercentage: Boolean,
+    var value: Float
 )

@@ -13,8 +13,8 @@ import androidx.room.PrimaryKey
     )
 ])
 data class Expense(
-    @PrimaryKey(autoGenerate = true) val expenseId: Long,
-    val expensesPoolId: Long,
-    val total: Float,
-    val name: String
+    @PrimaryKey(autoGenerate = true) var expenseId: Long,
+    var expensesPoolId: Long,
+    var total: Float,
+    var name: String
 )

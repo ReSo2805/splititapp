@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class ExpensesPool(
-    @PrimaryKey(autoGenerate = true) val expensesPoolId: Long,
-    val name: String
+    @PrimaryKey(autoGenerate = true) var expensesPoolId: Long,
+    var name: String
 )

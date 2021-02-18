@@ -13,7 +13,7 @@ interface ExpensesPoolDao {
     fun findAllExpensesPoolDetails(): List<ExpensesPoolDetails>
 
     @Insert
-    fun insertAll(vararg expensesPool: ExpensesPool)
+    fun insertAll(expensesPool: List<ExpensesPool>)
 
     @Query("DELETE FROM ExpensesPool WHERE expensesPoolId = :id")
     fun deleteById(id: Long)
