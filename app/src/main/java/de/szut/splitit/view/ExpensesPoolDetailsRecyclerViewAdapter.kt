@@ -15,22 +15,27 @@ import de.szut.splitit.database.views.ExpensesPoolDetails
 
 class ExpensesPoolDetailsRecyclerViewAdapter(
     private val context: Context,
+    private val createContextMenuListener: View.OnCreateContextMenuListener,
     private val expensesPoolDetails: List<ExpensesPoolDetails>
 ) : RecyclerView.Adapter<ExpensesPoolDetailsRecyclerViewAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, createContextMenuListener: View.OnCreateContextMenuListener) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.expenses_pool_name_text_view)
         val userCountTextView: TextView = view.findViewById(R.id.expenses_pool_user_count_text_view)
         val expenseCountTextView: TextView =
             view.findViewById(R.id.expenses_pool_expense_count_text_view)
         val expenseTotalTextView: TextView =
             view.findViewById(R.id.expenses_pool_expense_total_text_view)
+
+        init {
+            view.setOnCreateContextMenuListener(createContextMenuListener)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_expenses_pool_details, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, createContextMenuListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -50,25 +55,15 @@ class ExpensesPoolDetailsRecyclerViewAdapter(
             )
         holder.expenseTotalTextView.text =
             context.getString(R.string.expenses_pool_expense_total, details.expenseTotal)
+    }
 
-        holder.itemView.setOnLongClickListener {
-            openPopUp(holder)
-            true
-        }
-
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.itemView.setOnCreateContextMenuListener(null)
     }
 
     override fun getItemCount(): Int {
         return expensesPoolDetails.size
     }
 
-    private fun openPopUp(holder: ViewHolder) {
-        val popup = PopupMenu(context, holder.itemView)
-        popup.inflate(R.menu.expenses_pool_menu)
-        popup.setOnMenuItemClickListener { item: MenuItem? ->
-            Toast.makeText(context, item?.title, Toast.LENGTH_LONG).show()
-            false
-        }
-        popup.show()
-    }
 }

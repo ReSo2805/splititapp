@@ -2,8 +2,12 @@ package de.szut.splitit.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +31,41 @@ class ExpensesPoolActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_create_action, menu)
         return true
+    }
+
+    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menuInflater.inflate(R.menu.expenses_pool_menu, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        if(item.menuInfo == null) {
+            return false;
+        }
+
+        val info: AdapterView.AdapterContextMenuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
+        val targetView: View = info.targetView
+        val position: Int = info.position
+
+        return when(item.itemId) {
+            R.id.option_change_expenses_pool -> {
+                Toast.makeText(this, "Option change", Toast.LENGTH_SHORT).show()
+                false
+            }
+            R.id.option_delete_expenses_pool -> {
+                Toast.makeText(this, "Option delete", Toast.LENGTH_SHORT).show()
+                false
+            }
+            R.id.option_show_expenses_distribution_view -> {
+                Toast.makeText(this, "Option distribution", Toast.LENGTH_SHORT).show()
+                false
+            }
+            else -> {
+                Toast.makeText(this, "something else", Toast.LENGTH_SHORT).show()
+                false
+            }
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
@@ -67,7 +106,7 @@ class ExpensesPoolActivity : AppCompatActivity() {
             ExpensesPoolDetails("Ausgabenpool 1", 5, 5, 1000f)
 
         expensesPoolDetailsRecyclerViewAdapter =
-            ExpensesPoolDetailsRecyclerViewAdapter(this, arrayListOf(details))
+            ExpensesPoolDetailsRecyclerViewAdapter(this, this as View.OnCreateContextMenuListener, arrayListOf(details))
 
         expensesPoolDetailsRecyclerView.adapter = expensesPoolDetailsRecyclerViewAdapter
     }
