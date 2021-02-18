@@ -2,13 +2,19 @@ package de.szut.splitit.activities
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import de.szut.splitit.R
+import de.szut.splitit.database.entities.ExpensesPool
+import de.szut.splitit.database.entities.User
+import de.szut.splitit.database.services.ExpensesPoolService
+import de.szut.splitit.database.services.UserService
 
 
 class ChangeExpensesPoolActivity : AppCompatActivity() {
+
+    private val userService: UserService = UserService(this)
+    private val expensesPoolService: ExpensesPoolService = ExpensesPoolService(this)
 
     companion object {
         const val EXTRA_EXPENSES_POOL_ID: String = "expensesPoolId"
@@ -33,19 +39,37 @@ class ChangeExpensesPoolActivity : AppCompatActivity() {
     }
 
 
-    private fun initializeActivity() {
-        when (intent.getIntExtra(REQUEST_CODE_KEY, -1)) {
-            REQUEST_CODE_CREATE -> {
-                //TODO handle create
-                Toast.makeText(this, "Create", Toast.LENGTH_LONG).show()
-            }
-            REQUEST_CODE_CHANGE -> {
-                //TODO handle change
-            }
-            else -> {
-                setResult(RESULT_CANCELED)
-                finish()
-            }
+    private fun resolveRequestCode(): Int {
+       return intent.getIntExtra(REQUEST_CODE_KEY, -1)
+    }
+
+    private fun initializeActivity() = when(resolveRequestCode()) {
+        REQUEST_CODE_CREATE -> {
+            //TODO initialize activity respectively
+        }
+        REQUEST_CODE_CHANGE -> {
+            //TODO initialize activity respectively
+        }
+        else -> {
+            setResult(RESULT_CANCELED)
+            finish()
         }
     }
+
+    private fun publishChanges(expensesPool: ExpensesPool, users: List<User>) = when(resolveRequestCode()) {
+        REQUEST_CODE_CREATE, REQUEST_CODE_CHANGE -> {
+            users.forEach { user ->
+                user.expensesPoolId = expensesPool.expensesPoolId
+            }
+            expensesPoolService.save(expensesPool)
+            userService.save(users)
+            setResult(RESULT_OK)
+            finish()
+        }
+        else -> {
+            setResult(RESULT_CANCELED)
+            finish()
+        }
+    }
+
 }

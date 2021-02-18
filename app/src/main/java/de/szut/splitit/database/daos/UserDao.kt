@@ -8,7 +8,7 @@ import de.szut.splitit.database.entities.User
 @Dao
 interface UserDao {
     @Insert
-    fun insertAll(vararg users: User)
+    fun insertAll(users: List<User>)
 
     @Delete
     fun deleteAll(vararg users: User)

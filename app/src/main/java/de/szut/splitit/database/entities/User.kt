@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
     )
 ])
 data class User(
-    @PrimaryKey(autoGenerate = true) val userId: Long,
-    val expensesPoolId: Long,
-    val name: String
+    @PrimaryKey(autoGenerate = true) var userId: Long,
+    var expensesPoolId: Long,
+    var name: String
 )

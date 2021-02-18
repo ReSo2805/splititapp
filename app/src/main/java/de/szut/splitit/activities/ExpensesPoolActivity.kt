@@ -101,15 +101,14 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) = when(requestCode.takeIf{ resultCode == RESULT_OK }) {
         ChangeExpensesPoolActivity.REQUEST_CODE_CREATE -> {
-            //TODO get data from intent and call service classes
+            Toast.makeText(this, "Changes successful", Toast.LENGTH_LONG).show()
         }
-
         ChangeExpensesPoolActivity.REQUEST_CODE_CHANGE -> {
-            //TODO get data from intent and call service classes
+            Toast.makeText(this, "Changes successful", Toast.LENGTH_LONG).show()
         }
-
         else -> {
             super.onActivityResult(requestCode, resultCode, data)
+            Toast.makeText(this, "Changes failed", Toast.LENGTH_LONG).show()
         }
     }
 
