@@ -1,11 +1,10 @@
 package de.szut.splitit.view
 
 import android.content.Context
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.PopupMenu
-import androidx.core.widget.PopupMenuCompat
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
 import de.szut.splitit.database.views.ExpensesPoolDetails
