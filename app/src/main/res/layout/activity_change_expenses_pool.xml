@@ -7,7 +7,7 @@
     tools:context=".activities.ChangeExpensesPoolActivity">
 
     <EditText
-        android:id="@+id/expenses_pool_name_input"
+        android:id="@+id/expenses_pool_name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/expenses_pool_users_title"
+        android:id="@+id/expenses_pool_users_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -33,7 +33,7 @@
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_name_input" />
+        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_name_edit_text" />
 
 
     <LinearLayout
@@ -44,10 +44,10 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_users_title">
+        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_users_text_view">
 
         <EditText
-            android:id="@+id/expenses_pool_new_user_name_input"
+            android:id="@+id/expenses_pool_new_user_name_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
