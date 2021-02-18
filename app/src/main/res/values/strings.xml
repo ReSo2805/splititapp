@@ -1,5 +1,12 @@
 <resources>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="dialog_confirmation_delete_title">Wirklich löschen?</string>
+    <string name="dialog_confirmation_delete_message">Wollen Sie das Element wirklich löschen?</string>
+
+
     <string name="app_name">SplitItApp</string>
+
     <string name="expenses_pool_expense_total">€ %.2f%n</string>
     <plurals name="expenses_pool_user_count">
         <item quantity="zero">keine Personen</item>
