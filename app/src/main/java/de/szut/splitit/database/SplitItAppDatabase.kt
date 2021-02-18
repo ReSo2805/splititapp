@@ -32,7 +32,7 @@ abstract class SplitItAppDatabase: RoomDatabase() {
         }
 
         private fun createDatabase(context: Context): SplitItAppDatabase {
-           return Room.databaseBuilder(context.applicationContext, SplitItAppDatabase::class.java, DATABASE_NAME)
+           return Room.databaseBuilder(context, SplitItAppDatabase::class.java, DATABASE_NAME)
                .fallbackToDestructiveMigration()
                .allowMainThreadQueries() //TODO should be removed
                .build()

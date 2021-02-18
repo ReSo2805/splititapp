@@ -8,7 +8,7 @@ import de.szut.splitit.database.entities.ExpensesPool
 class ExpensesPoolService(context: Context) {
 
     private val expensesPoolDao: ExpensesPoolDao =
-        SplitItAppDatabase.getInstance(context.applicationContext).expensesPoolDao()
+        SplitItAppDatabase.getInstance(context).expensesPoolDao()
 
     fun save(expensesPool: ExpensesPool) {
         expensesPoolDao.insertAll(listOf(expensesPool))

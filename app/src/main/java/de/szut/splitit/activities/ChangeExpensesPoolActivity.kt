@@ -13,8 +13,8 @@ import de.szut.splitit.database.services.UserService
 
 class ChangeExpensesPoolActivity : AppCompatActivity() {
 
-    private val userService: UserService = UserService(this)
-    private val expensesPoolService: ExpensesPoolService = ExpensesPoolService(this)
+    private lateinit var expensesPoolService: ExpensesPoolService
+    private lateinit var userService: UserService
 
     companion object {
         const val EXTRA_EXPENSES_POOL_ID: String = "expensesPoolId"
@@ -25,14 +25,19 @@ class ChangeExpensesPoolActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        expensesPoolService = ExpensesPoolService(this)
+        userService = UserService(this)
+
         setContentView(R.layout.activity_change_expenses_pool)
         actionBar?.setDisplayHomeAsUpEnabled(true);
         initializeActivity()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.home -> {
-            NavUtils.navigateUpFromSameTask(this)
+        android.R.id.home -> {
+            setResult(RESULT_CANCELED)
+            finish()
             true
         }
         else -> super.onOptionsItemSelected(item)
