@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
+import de.szut.splitit.database.views.ContextInfo
 import de.szut.splitit.database.views.ExpensesPoolDetails
 import de.szut.splitit.view.ExpensesPoolDetailsRecyclerViewAdapter
 
@@ -19,7 +20,7 @@ import de.szut.splitit.view.ExpensesPoolDetailsRecyclerViewAdapter
 class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback {
 
     private lateinit var expensesPoolDetailsRecyclerView: RecyclerView
-    private var targetContextMenuInfo: ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuInfo? = null
+    private var targetContextMenuInfo: ContextInfo? = null
     private lateinit var expensesPoolDetailsRecyclerViewAdapter: ExpensesPoolDetailsRecyclerViewAdapter
 
 
@@ -49,8 +50,8 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
     }
 
     override fun onContextMenuClick(view: View,
-                                    contextMenuInfo: ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuInfo) {
-        targetContextMenuInfo = contextMenuInfo
+                                    contextInfo: ContextInfo) {
+        targetContextMenuInfo = contextInfo
         view.showContextMenu()
     }
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
+import de.szut.splitit.database.views.ContextInfo
 import de.szut.splitit.database.views.ExpensesPoolDetails
 
 class ExpensesPoolDetailsRecyclerViewAdapter(
@@ -15,10 +16,8 @@ class ExpensesPoolDetailsRecyclerViewAdapter(
     private val expensesPoolDetails: List<ExpensesPoolDetails>
 ) : RecyclerView.Adapter<ExpensesPoolDetailsRecyclerViewAdapter.ViewHolder>() {
 
-    data class ContextMenuInfo(var targetViewPosition: Int, var id: Long)
-
     interface ContextMenuCallback {
-        fun onContextMenuClick(view: View, contextMenuInfo: ContextMenuInfo)
+        fun onContextMenuClick(view: View, contextInfo: ContextInfo)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -57,7 +56,7 @@ class ExpensesPoolDetailsRecyclerViewAdapter(
         holder.itemView.tag = details.expensesPoolId
 
         holder.itemView.setOnLongClickListener {
-            val info: ContextMenuInfo = ContextMenuInfo(holder.adapterPosition,
+            val info: ContextInfo = ContextInfo(holder.adapterPosition,
                     holder.itemView.tag.toString().toLong())
             contextMenuCallback.onContextMenuClick(it, info)
             true

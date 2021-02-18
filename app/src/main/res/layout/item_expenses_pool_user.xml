@@ -21,7 +21,7 @@
         android:gravity="center"/>
 
     <ImageButton
-        android:id="@+id/expenses_pool_user_delete_button"
+        android:id="@+id/expenses_pool_element_delete_button"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
