@@ -33,7 +33,7 @@
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_name_edit_text" />
+        app:layout_constraintTop_toBottomOf="@id/expenses_pool_name_edit_text" />
 
 
     <LinearLayout
@@ -44,7 +44,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_users_text_view">
+        app:layout_constraintTop_toBottomOf="@id/expenses_pool_users_text_view">
 
         <EditText
             android:id="@+id/expenses_pool_new_user_name_edit_text"
@@ -53,8 +53,7 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:inputType="text"
-            android:text="Name"
-            app:layout_constraintEnd_toStartOf="@+id/button2" />
+            android:text="Name" />
 
 
         <ImageButton
@@ -76,7 +75,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expenses_pool_new_user_linear_layout">
+        app:layout_constraintTop_toBottomOf="@id/expenses_pool_new_user_linear_layout">
 
     </androidx.recyclerview.widget.RecyclerView>
 
