@@ -8,6 +8,7 @@ import de.szut.splitit.R
 class ChangeExpensesPoolActivity : AppCompatActivity() {
 
     companion object {
+        const val EXTRA_EXPENSES_POOL_ID: String = "expensesPoolId"
         const val REQUEST_CODE_KEY: String = "requestCode"
         const val REQUEST_CODE_CREATE: Int = 0
         const val REQUEST_CODE_CHANGE: Int = 1
