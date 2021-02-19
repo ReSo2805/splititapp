@@ -5,8 +5,9 @@ import androidx.room.DatabaseView
 @DatabaseView(
     "SELECT ep.expensesPoolId, ep.name, COUNT(u.userId) AS userCount, COUNT(ex.expenseId) AS expenseCount, SUM(ex.total) AS expenseTotal " +
             "FROM ExpensesPool AS ep " +
-            "JOIN User u ON ep.expensesPoolId = u.expensesPoolId " +
-            "JOIN Expense ex ON ex.expensesPoolId = ep.expensesPoolId"
+            "JOIN User u ON u.expensesPoolId = ep.expensesPoolId " +
+            "LEFT JOIN Expense ex ON ex.expensesPoolId = ep.expensesPoolId " +
+            "GROUP BY ep.expensesPoolId"
 )
 data class ExpensesPoolDetails(
     val expensesPoolId: Long,

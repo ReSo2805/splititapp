@@ -7,14 +7,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
-import de.szut.splitit.database.views.ContextInfo
+import de.szut.splitit.database.ContextInfo
 import de.szut.splitit.database.views.ExpensesPoolDetails
 
 class ExpensesPoolDetailsRecyclerViewAdapter(
     private val context: Context,
-    private val contextMenuCallback: ContextMenuCallback,
-    private val expensesPoolDetails: List<ExpensesPoolDetails>
+    private val contextMenuCallback: ContextMenuCallback
 ) : RecyclerView.Adapter<ExpensesPoolDetailsRecyclerViewAdapter.ViewHolder>() {
+
+    private var expensesPoolDetails: List<ExpensesPoolDetails> = arrayListOf()
 
     interface ContextMenuCallback {
         fun onContextMenuClick(view: View, contextInfo: ContextInfo)
@@ -27,6 +28,11 @@ class ExpensesPoolDetailsRecyclerViewAdapter(
             view.findViewById(R.id.expenses_pool_expense_count_text_view)
         val expenseTotalTextView: TextView =
             view.findViewById(R.id.expenses_pool_expense_total_text_view)
+    }
+
+    fun setExpensesPoolDetails(expensesPoolDetails: List<ExpensesPoolDetails>) {
+        this.expensesPoolDetails = expensesPoolDetails
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

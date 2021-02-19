@@ -1,6 +1,7 @@
 package de.szut.splitit.activities
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
@@ -13,7 +14,7 @@ import de.szut.splitit.database.entities.ExpensesPool
 import de.szut.splitit.database.entities.User
 import de.szut.splitit.database.services.ExpensesPoolService
 import de.szut.splitit.database.services.UserService
-import de.szut.splitit.database.views.ContextInfo
+import de.szut.splitit.database.ContextInfo
 import de.szut.splitit.view.ExpensesPoolUsersRecyclerViewAdapter
 
 
@@ -22,7 +23,7 @@ class ChangeExpensesPoolActivity : AppCompatActivity(), ExpensesPoolUsersRecycle
     private lateinit var expensesPoolService: ExpensesPoolService
     private lateinit var userService: UserService
 
-    private var expensesPool: ExpensesPool? = null
+    private lateinit var expensesPool: ExpensesPool
     private lateinit var users: ArrayList<User>
 
     private lateinit var expensesPoolNameEditText: EditText
@@ -53,6 +54,12 @@ class ChangeExpensesPoolActivity : AppCompatActivity(), ExpensesPoolUsersRecycle
 
         expensesPoolNewUserNameEditText = findViewById(R.id.expenses_pool_new_user_name_edit_text)
         expensesPoolAddUserButton = findViewById(R.id.expenses_pool_add_user_button)
+        expensesPoolAddUserButton.setOnClickListener {
+            val newUserName: String = expensesPoolNewUserNameEditText.text.toString()
+            users.add(User(name = newUserName))
+            expensesPoolUsersRecyclerViewAdapter.notifyDataSetChanged()
+            expensesPoolNewUserNameEditText.text.clear()
+        }
 
         expensesPoolUsersRecyclerView = findViewById(R.id.expenses_pool_users_recycler_view)
         val layoutManager = LinearLayoutManager(this)
@@ -68,14 +75,9 @@ class ChangeExpensesPoolActivity : AppCompatActivity(), ExpensesPoolUsersRecycle
             REQUEST_CODE_CHANGE -> {
                 val expensesPoolId: Long = resolveExpensePoolId()
                 expensesPool = expensesPoolService.findById(expensesPoolId)
-
-                if (expensesPool == null) {
-                    setResult(RESULT_CANCELED)
-                    finish()
-                } else {
-                    users = userService.findByExpensesPoolId(expensesPool!!.expensesPoolId)
-                    setRecyclerViewAdapterFor(users)
-                }
+                expensesPoolNameEditText.setText(expensesPool.name)
+                users = userService.findByExpensesPoolId(expensesPool.expensesPoolId)
+                setRecyclerViewAdapterFor(users)
             }
             else -> {
                 setResult(RESULT_CANCELED)
@@ -90,10 +92,20 @@ class ChangeExpensesPoolActivity : AppCompatActivity(), ExpensesPoolUsersRecycle
         expensesPoolUsersRecyclerViewAdapter.notifyDataSetChanged()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_change_expenses_pool, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> {
             setResult(RESULT_CANCELED)
             finish()
+            true
+        }
+        R.id.option_submit -> {
+            expensesPool.name = expensesPoolNameEditText.text.toString()
+            publishChanges(expensesPool, users)
             true
         }
         else -> super.onOptionsItemSelected(item)

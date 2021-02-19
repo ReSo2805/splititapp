@@ -9,12 +9,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
-import de.szut.splitit.database.entities.ExpensesPool
+import de.szut.splitit.database.ContextInfo
 import de.szut.splitit.database.services.ExpensesPoolService
-import de.szut.splitit.database.views.ContextInfo
 import de.szut.splitit.database.views.ExpensesPoolDetails
 import de.szut.splitit.view.ExpensesPoolDetailsRecyclerViewAdapter
 
@@ -25,6 +26,9 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
 
     private lateinit var expensesPoolDetailsRecyclerView: RecyclerView
     private var targetContextMenuInfo: ContextInfo? = null
+
+    private lateinit var expensesPoolDetailsLiveData: LiveData<List<ExpensesPoolDetails>>
+    private var expensePoolDetails: ArrayList<ExpensesPoolDetails> = arrayListOf()
     private lateinit var expensesPoolDetailsRecyclerViewAdapter: ExpensesPoolDetailsRecyclerViewAdapter
 
 
@@ -39,11 +43,14 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         expensesPoolDetailsRecyclerView.layoutManager = layoutManager
 
-        val expensesPoolDetails: ArrayList<ExpensesPoolDetails> = expensesPoolService.findAllExpensesPoolDetails()
+        expensesPoolDetailsLiveData = expensesPoolService.findAllExpensesPoolDetails()
+        expensesPoolDetailsLiveData.observe(this, { details: List<ExpensesPoolDetails> ->
+            expensesPoolDetailsRecyclerViewAdapter.setExpensesPoolDetails(details)
+        })
 
         expensesPoolDetailsRecyclerViewAdapter =
                 ExpensesPoolDetailsRecyclerViewAdapter(this,
-                        this as ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback, expensesPoolDetails)
+                        this as ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback)
 
         expensesPoolDetailsRecyclerView.adapter = expensesPoolDetailsRecyclerViewAdapter
 
@@ -77,7 +84,7 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        menuInflater.inflate(R.menu.expenses_pool_menu, menu)
+        menuInflater.inflate(R.menu.menu_expenses_pool, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -101,7 +108,7 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
                         .setMessage(R.string.dialog_confirmation_delete_message)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(R.string.yes) { dialog, whichButton ->
-                            //TODO delete pool
+                            expensesPoolService.deleteById(targetContextMenuInfo!!.id)
                         }
                         .setNegativeButton(R.string.no, null)
                         .show()
@@ -123,6 +130,7 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) = when(requestCode.takeIf{ resultCode == RESULT_OK }) {
         ChangeExpensesPoolActivity.REQUEST_CODE_CREATE -> {
             Toast.makeText(this, "Changes successful", Toast.LENGTH_LONG).show()
+            expensesPoolDetailsRecyclerViewAdapter.notifyDataSetChanged()
         }
         ChangeExpensesPoolActivity.REQUEST_CODE_CHANGE -> {
             Toast.makeText(this, "Changes successful", Toast.LENGTH_LONG).show()

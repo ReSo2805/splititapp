@@ -1,12 +1,12 @@
 package de.szut.splitit.database.services
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import de.szut.splitit.database.DatabaseHelper
 import de.szut.splitit.database.SplitItAppDatabase
 import de.szut.splitit.database.daos.ExpensesPoolDao
 import de.szut.splitit.database.entities.ExpensesPool
 import de.szut.splitit.database.views.ExpensesPoolDetails
-import java.math.BigDecimal
 
 class ExpensesPoolService(context: Context) {
 
@@ -14,23 +14,25 @@ class ExpensesPoolService(context: Context) {
         SplitItAppDatabase.getInstance(context).expensesPoolDao()
 
     fun save(expensesPool: ExpensesPool): Long? {
-        val expensesPoolId: Long? = expensesPool
-                .takeUnless(DatabaseHelper.ENTITY_EXISTS)
-                ?.let(expensesPoolDao::insert)
-
         expensesPool
                 .takeIf(DatabaseHelper.ENTITY_EXISTS)
                 ?.apply(expensesPoolDao::update)
 
-        return expensesPoolId
+        return expensesPool
+                .takeUnless(DatabaseHelper.ENTITY_EXISTS)
+                ?.let(expensesPoolDao::insert)
     }
 
-    fun findAllExpensesPoolDetails(): ArrayList<ExpensesPoolDetails> {
-        return expensesPoolDao.findAllExpensesPoolDetails().toCollection(arrayListOf())
+    fun findAllExpensesPoolDetails(): LiveData<List<ExpensesPoolDetails>> {
+        return expensesPoolDao.findAllExpensesPoolDetails()
     }
 
-    fun findById(expensesPoolId: Long): ExpensesPool? {
+    fun findById(expensesPoolId: Long): ExpensesPool {
         return expensesPoolDao.findById(expensesPoolId)
+    }
+
+    fun deleteById(expensesPoolId: Long) {
+        expensesPoolDao.deleteById(expensesPoolId)
     }
 
 }

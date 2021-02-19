@@ -13,8 +13,8 @@ class UserService(context: Context) {
         SplitItAppDatabase.getInstance(context).userDao()
 
     fun save(users: List<User>) {
-        val newUsers: List<User> = users.filter(DatabaseHelper.ENTITY_EXISTS)
-        val existingUsers: List<User> = users.filterNot(DatabaseHelper.ENTITY_EXISTS)
+        val newUsers: List<User> = users.filterNot(DatabaseHelper.ENTITY_EXISTS)
+        val existingUsers: List<User> = users.filter(DatabaseHelper.ENTITY_EXISTS)
         userDao.insertAll(newUsers)
         userDao.updateAll(existingUsers)
     }

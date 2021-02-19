@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
 import de.szut.splitit.database.entities.User
-import de.szut.splitit.database.views.ContextInfo
+import de.szut.splitit.database.ContextInfo
 
 class ExpensesPoolUsersRecyclerViewAdapter(
         private val context: Context,
