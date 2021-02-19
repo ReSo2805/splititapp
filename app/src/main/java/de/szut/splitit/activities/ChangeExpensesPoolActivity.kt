@@ -3,11 +3,12 @@ package de.szut.splitit.activities
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
+import de.szut.splitit.database.DatabaseHelper
 import de.szut.splitit.database.entities.ExpensesPool
 import de.szut.splitit.database.entities.User
 import de.szut.splitit.database.services.ExpensesPoolService
@@ -21,7 +22,14 @@ class ChangeExpensesPoolActivity : AppCompatActivity(), ExpensesPoolUsersRecycle
     private lateinit var expensesPoolService: ExpensesPoolService
     private lateinit var userService: UserService
 
+    private var expensesPool: ExpensesPool? = null
+    private lateinit var users: ArrayList<User>
+
     private lateinit var expensesPoolNameEditText: EditText
+
+    private lateinit var expensesPoolNewUserNameEditText: EditText
+    private lateinit var expensesPoolAddUserButton: ImageButton
+
     private lateinit var expensesPoolUsersRecyclerView: RecyclerView
     private lateinit var expensesPoolUsersRecyclerViewAdapter: ExpensesPoolUsersRecyclerViewAdapter
 
@@ -42,35 +50,44 @@ class ChangeExpensesPoolActivity : AppCompatActivity(), ExpensesPoolUsersRecycle
         actionBar?.setDisplayHomeAsUpEnabled(true);
 
         expensesPoolNameEditText = findViewById(R.id.expenses_pool_name_edit_text)
+
+        expensesPoolNewUserNameEditText = findViewById(R.id.expenses_pool_new_user_name_edit_text)
+        expensesPoolAddUserButton = findViewById(R.id.expenses_pool_add_user_button)
+
         expensesPoolUsersRecyclerView = findViewById(R.id.expenses_pool_users_recycler_view)
         val layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         expensesPoolUsersRecyclerView.layoutManager = layoutManager
 
-        initializeActivity()
-    }
+        when(resolveRequestCode()) {
+            REQUEST_CODE_CREATE -> {
+                expensesPool = ExpensesPool()
+                users = arrayListOf()
+                setRecyclerViewAdapterFor(users)
+            }
+            REQUEST_CODE_CHANGE -> {
+                val expensesPoolId: Long = resolveExpensePoolId()
+                expensesPool = expensesPoolService.findById(expensesPoolId)
 
-    private fun initializeActivity() = when(resolveRequestCode()) {
-        REQUEST_CODE_CREATE -> {
-            //TODO initialize activity respectively
-            expensesPoolUsersRecyclerViewAdapter = ExpensesPoolUsersRecyclerViewAdapter(this,
-                    this as ExpensesPoolUsersRecyclerViewAdapter.OnDeleteCallback,
-                    listOf(User(1L, 1L, "Manfred"))
-            )
-            expensesPoolUsersRecyclerView.adapter = expensesPoolUsersRecyclerViewAdapter
-        }
-        REQUEST_CODE_CHANGE -> {
-            //TODO initialize activity respectively
-        }
-        else -> {
-            setResult(RESULT_CANCELED)
-            finish()
+                if (expensesPool == null) {
+                    setResult(RESULT_CANCELED)
+                    finish()
+                } else {
+                    users = userService.findByExpensesPoolId(expensesPool!!.expensesPoolId)
+                    setRecyclerViewAdapterFor(users)
+                }
+            }
+            else -> {
+                setResult(RESULT_CANCELED)
+                finish()
+            }
         }
     }
 
     override fun onDelete(contextInfo: ContextInfo) {
-        Toast.makeText(this, "onDelete called", Toast.LENGTH_SHORT).show()
-        TODO("Not yet implemented")
+        val user: User = users.removeAt(contextInfo.targetViewPosition)
+        userService.delete(user)
+        expensesPoolUsersRecyclerViewAdapter.notifyDataSetChanged()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -82,19 +99,10 @@ class ChangeExpensesPoolActivity : AppCompatActivity(), ExpensesPoolUsersRecycle
         else -> super.onOptionsItemSelected(item)
     }
 
-
-    private fun resolveRequestCode(): Int {
-       return intent.getIntExtra(REQUEST_CODE_KEY, -1)
-    }
-
-
-
     private fun publishChanges(expensesPool: ExpensesPool, users: List<User>) = when(resolveRequestCode()) {
         REQUEST_CODE_CREATE, REQUEST_CODE_CHANGE -> {
-            users.forEach { user ->
-                user.expensesPoolId = expensesPool.expensesPoolId
-            }
-            expensesPoolService.save(expensesPool)
+            val expensesPoolId: Long = expensesPoolService.save(expensesPool) ?: expensesPool.expensesPoolId
+            users.forEach { user -> user.expensesPoolId = expensesPoolId }
             userService.save(users)
             setResult(RESULT_OK)
             finish()
@@ -103,6 +111,22 @@ class ChangeExpensesPoolActivity : AppCompatActivity(), ExpensesPoolUsersRecycle
             setResult(RESULT_CANCELED)
             finish()
         }
+    }
+
+    private fun resolveRequestCode(): Int {
+        return intent.getIntExtra(REQUEST_CODE_KEY, -1)
+    }
+
+    private fun resolveExpensePoolId(): Long {
+       return intent.getLongExtra(EXTRA_EXPENSES_POOL_ID, DatabaseHelper.ENTITY_DEFAULT_ID)
+    }
+
+    private fun setRecyclerViewAdapterFor(users: List<User>) {
+        expensesPoolUsersRecyclerViewAdapter = ExpensesPoolUsersRecyclerViewAdapter(this,
+                this as ExpensesPoolUsersRecyclerViewAdapter.OnDeleteCallback,
+                users
+        )
+        expensesPoolUsersRecyclerView.adapter = expensesPoolUsersRecyclerViewAdapter
     }
 
 }

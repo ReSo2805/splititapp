@@ -3,6 +3,7 @@ package de.szut.splitit.database.entities
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import de.szut.splitit.database.DatabaseHelper
 
 @Entity(foreignKeys = [
     ForeignKey(
@@ -13,7 +14,11 @@ import androidx.room.PrimaryKey
     )
 ])
 data class User(
-    @PrimaryKey(autoGenerate = true) var userId: Long,
-    var expensesPoolId: Long,
-    var name: String
-)
+        @PrimaryKey(autoGenerate = true) var userId: Long = DatabaseHelper.ENTITY_DEFAULT_ID,
+        var expensesPoolId: Long = DatabaseHelper.ENTITY_DEFAULT_ID,
+        var name: String = ""
+): BaseEntity {
+    override fun getId(): Long {
+        return userId
+    }
+}

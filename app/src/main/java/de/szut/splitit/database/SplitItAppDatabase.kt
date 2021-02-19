@@ -17,7 +17,7 @@ import de.szut.splitit.database.views.ExpensesPoolDetails
 @Database(
     entities = [ExpensesPool::class, Expense::class, ExpenseShare::class, User::class],
     views = [ExpensesPoolDetails::class],
-    version = 1
+    version = 2
 )
 abstract class SplitItAppDatabase: RoomDatabase() {
 

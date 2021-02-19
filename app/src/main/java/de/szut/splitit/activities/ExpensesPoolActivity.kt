@@ -12,12 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
+import de.szut.splitit.database.entities.ExpensesPool
+import de.szut.splitit.database.services.ExpensesPoolService
 import de.szut.splitit.database.views.ContextInfo
 import de.szut.splitit.database.views.ExpensesPoolDetails
 import de.szut.splitit.view.ExpensesPoolDetailsRecyclerViewAdapter
 
 
 class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback {
+
+    private lateinit var expensesPoolService: ExpensesPoolService
 
     private lateinit var expensesPoolDetailsRecyclerView: RecyclerView
     private var targetContextMenuInfo: ContextInfo? = null
@@ -27,7 +31,23 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_expenses_pool)
-        initializeViews()
+
+        expensesPoolService = ExpensesPoolService(this)
+
+        expensesPoolDetailsRecyclerView = findViewById(R.id.expenses_pool_details_recycler_view)
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        expensesPoolDetailsRecyclerView.layoutManager = layoutManager
+
+        val expensesPoolDetails: ArrayList<ExpensesPoolDetails> = expensesPoolService.findAllExpensesPoolDetails()
+
+        expensesPoolDetailsRecyclerViewAdapter =
+                ExpensesPoolDetailsRecyclerViewAdapter(this,
+                        this as ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback, expensesPoolDetails)
+
+        expensesPoolDetailsRecyclerView.adapter = expensesPoolDetailsRecyclerViewAdapter
+
+        registerForContextMenu(expensesPoolDetailsRecyclerView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -111,24 +131,6 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
             super.onActivityResult(requestCode, resultCode, data)
             Toast.makeText(this, "Changes failed", Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun initializeViews() {
-        expensesPoolDetailsRecyclerView = findViewById(R.id.expenses_pool_details_recycler_view)
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        expensesPoolDetailsRecyclerView.layoutManager = layoutManager
-
-        val details =
-            ExpensesPoolDetails(1L, "Ausgabenpool 1", 5, 5, 1000f)
-
-        expensesPoolDetailsRecyclerViewAdapter =
-            ExpensesPoolDetailsRecyclerViewAdapter(this,
-                    this as ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback, arrayListOf(details))
-
-        expensesPoolDetailsRecyclerView.adapter = expensesPoolDetailsRecyclerViewAdapter
-
-        registerForContextMenu(expensesPoolDetailsRecyclerView)
     }
 
 }

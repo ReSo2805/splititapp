@@ -3,6 +3,7 @@ package de.szut.splitit.database.entities
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import de.szut.splitit.database.DatabaseHelper
 
 @Entity(foreignKeys = [
     ForeignKey(
@@ -19,9 +20,14 @@ import androidx.room.PrimaryKey
     )
 ])
 data class ExpenseShare(
-    @PrimaryKey(autoGenerate = true) var expenseShareId: Long,
-    var expenseId: Long,
-    var userId: Long,
-    var valueInPercentage: Boolean,
-    var value: Float
-)
+        @PrimaryKey(autoGenerate = true) var expenseShareId: Long = DatabaseHelper.ENTITY_DEFAULT_ID,
+        var expenseId: Long = DatabaseHelper.ENTITY_DEFAULT_ID,
+        var userId: Long = DatabaseHelper.ENTITY_DEFAULT_ID,
+        var valueInPercentage: Boolean,
+        var value: Float
+): BaseEntity {
+    override fun getId(): Long {
+        return expenseShareId
+    }
+
+}

@@ -3,6 +3,7 @@ package de.szut.splitit.database.daos
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import de.szut.splitit.database.entities.ExpensesPool
 import de.szut.splitit.database.views.ExpensesPoolDetails
 
@@ -10,13 +11,14 @@ import de.szut.splitit.database.views.ExpensesPoolDetails
 interface ExpensesPoolDao {
 
     @Query("SELECT * FROM ExpensesPoolDetails WHERE (SELECT COUNT(*) FROM ExpensesPool) > 0")
-    fun findAllExpensesPoolDetails(): List<ExpensesPoolDetails>
+    fun findAllExpensesPoolDetails(): Array<ExpensesPoolDetails>
+
+    @Query("SELECT * FROM ExpensesPool WHERE expensesPoolId = :expensesPoolId")
+    fun findById(expensesPoolId: Long): ExpensesPool?
 
     @Insert
-    fun insertAll(expensesPool: List<ExpensesPool>)
+    fun insert(expensesPool: ExpensesPool): Long
 
-    @Query("DELETE FROM ExpensesPool WHERE expensesPoolId = :id")
-    fun deleteById(id: Long)
-
-
+    @Update
+    fun update(expensesPool: ExpensesPool)
 }
