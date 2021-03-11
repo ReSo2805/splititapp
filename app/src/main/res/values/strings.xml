@@ -23,4 +23,6 @@
     <string name="option_change_expenses_pool">Ausgabenpool bearbeiten</string>
     <string name="option_delete_expenses_pool">Ausgabenpool löschen</string>
     <string name="option_show_expenses_distribution_view">Schuldenanischt anzeigen</string>
+    <string name="change_expenses_input_title">Ausgabenanteile:</string>
+    <string name="change_expenses_total_text">Zu verteilender Restbetrag:</string>
 </resources>
