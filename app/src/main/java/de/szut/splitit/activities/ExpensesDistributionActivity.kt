@@ -7,6 +7,6 @@ import de.szut.splitit.R
 class ExpensesDistributionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_expenses_distribution)
+        setContentView(R.layout.activity_details)
     }
 }

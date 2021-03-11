@@ -13,14 +13,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import de.szut.splitit.OnItemClickListener
 import de.szut.splitit.R
+import de.szut.splitit.RecyclerViewUtil
 import de.szut.splitit.database.ContextInfo
 import de.szut.splitit.database.services.ExpensesPoolService
 import de.szut.splitit.database.views.ExpensesPoolDetails
 import de.szut.splitit.view.ExpensesPoolDetailsRecyclerViewAdapter
 
 
-class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback {
+class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback, OnItemClickListener {
 
     private lateinit var expensesPoolService: ExpensesPoolService
 
@@ -28,7 +30,6 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
     private var targetContextMenuInfo: ContextInfo? = null
 
     private lateinit var expensesPoolDetailsLiveData: LiveData<List<ExpensesPoolDetails>>
-    private var expensePoolDetails: ArrayList<ExpensesPoolDetails> = arrayListOf()
     private lateinit var expensesPoolDetailsRecyclerViewAdapter: ExpensesPoolDetailsRecyclerViewAdapter
 
 
@@ -38,21 +39,18 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
 
         expensesPoolService = ExpensesPoolService(this)
 
-        expensesPoolDetailsRecyclerView = findViewById(R.id.expenses_pool_details_recycler_view)
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        expensesPoolDetailsRecyclerView.layoutManager = layoutManager
-
-        expensesPoolDetailsLiveData = expensesPoolService.findAllExpensesPoolDetails()
-        expensesPoolDetailsLiveData.observe(this, { details: List<ExpensesPoolDetails> ->
-            expensesPoolDetailsRecyclerViewAdapter.setExpensesPoolDetails(details)
-        })
+        expensesPoolDetailsRecyclerView =
+                RecyclerViewUtil.withLayoutManager(this, R.id.expenses_pool_details_recycler_view)
 
         expensesPoolDetailsRecyclerViewAdapter =
                 ExpensesPoolDetailsRecyclerViewAdapter(this,
-                        this as ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback)
+                        this as ExpensesPoolDetailsRecyclerViewAdapter.ContextMenuCallback,
+                        this as OnItemClickListener)
 
         expensesPoolDetailsRecyclerView.adapter = expensesPoolDetailsRecyclerViewAdapter
+
+        expensesPoolDetailsLiveData = expensesPoolService.findAllExpensesPoolDetails()
+        expensesPoolDetailsLiveData.observe(this, expensesPoolDetailsRecyclerViewAdapter::setExpensesPoolDetails)
 
         registerForContextMenu(expensesPoolDetailsRecyclerView)
     }
@@ -74,6 +72,11 @@ class ExpensesPoolActivity : AppCompatActivity(), ExpensesPoolDetailsRecyclerVie
         else -> {
             super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onClick(v: View, id: Long) {
+        val intent = Intent(this, ExpensesPoolDetailsActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onContextMenuClick(view: View,

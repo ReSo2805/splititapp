@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import de.szut.splitit.OnItemClickListener
 import de.szut.splitit.R
 import de.szut.splitit.database.ContextInfo
 import de.szut.splitit.database.views.ExpensesPoolDetails
 
 class ExpensesPoolDetailsRecyclerViewAdapter(
     private val context: Context,
-    private val contextMenuCallback: ContextMenuCallback
+    private val contextMenuCallback: ContextMenuCallback,
+    private val itemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<ExpensesPoolDetailsRecyclerViewAdapter.ViewHolder>() {
 
     private var expensesPoolDetails: List<ExpensesPoolDetails> = arrayListOf()
@@ -36,7 +38,7 @@ class ExpensesPoolDetailsRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(context)
             .inflate(R.layout.item_expenses_pool_details, parent, false)
         return ViewHolder(view)
     }
@@ -61,6 +63,10 @@ class ExpensesPoolDetailsRecyclerViewAdapter(
 
         holder.itemView.tag = details.expensesPoolId
 
+        holder.itemView.setOnClickListener {
+            itemClickListener.onClick(it, it.tag.toString().toLong())
+        }
+
         holder.itemView.setOnLongClickListener {
             val info: ContextInfo = ContextInfo(holder.adapterPosition,
                     holder.itemView.tag.toString().toLong())
@@ -73,6 +79,7 @@ class ExpensesPoolDetailsRecyclerViewAdapter(
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
         holder.itemView.setOnLongClickListener(null)
+        holder.itemView.setOnClickListener(null)
     }
 
     override fun getItemCount(): Int {

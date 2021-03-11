@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.szut.splitit.R
+import de.szut.splitit.RecyclerViewUtil
 import de.szut.splitit.database.DatabaseHelper
 import de.szut.splitit.database.entities.ExpensesPool
 import de.szut.splitit.database.entities.User
@@ -61,10 +62,8 @@ class ChangeExpensesPoolActivity : AppCompatActivity(), ExpensesPoolUsersRecycle
             expensesPoolNewUserNameEditText.text.clear()
         }
 
-        expensesPoolUsersRecyclerView = findViewById(R.id.expenses_pool_users_recycler_view)
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        expensesPoolUsersRecyclerView.layoutManager = layoutManager
+        expensesPoolUsersRecyclerView =
+                RecyclerViewUtil.withLayoutManager(this, R.id.expenses_pool_users_recycler_view)
 
         when(resolveRequestCode()) {
             REQUEST_CODE_CREATE -> {
